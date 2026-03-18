@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, FormEvent} from 'react';
 import {motion, AnimatePresence} from 'motion/react';
 import {X, Mail, Lock} from 'lucide-react';
 import {useDemoAuth} from '../contexts/DemoAuthContext';
@@ -25,7 +25,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
 
   if (!role) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessage(null);
     setLoading(true);
