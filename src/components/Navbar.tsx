@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { Menu, X, ChevronDown, Briefcase, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useDemoAuth } from '../contexts/DemoAuthContext';
+import DemoAuthModal from './DemoAuthModal';
+
+type Role = 'talent' | 'hr';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authRole, setAuthRole] = useState<Role | null>(null);
+  const { user, logout } = useDemoAuth();
 
   return (
     <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
@@ -25,47 +31,69 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden md:flex items-center">
-            <div className="relative">
-              <button 
-                onClick={() => setIsAuthOpen(!isAuthOpen)}
-                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-              >
-                Đăng nhập / Đăng ký
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              
-              <AnimatePresence>
-                {isAuthOpen && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden"
+            {!user ? (
+              <div className="relative">
+                <button
+                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                  onClick={() => {
+                    setAuthRole('talent');
+                    setAuthOpen(true);
+                  }}
+                >
+                  Đăng nhập / Đăng ký
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-slate-100 overflow-hidden">
+                  <button
+                    className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
+                    onClick={() => {
+                      setAuthRole('talent');
+                      setAuthOpen(true);
+                    }}
                   >
-                    <div className="p-2">
-                      <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 rounded-lg transition-colors group">
-                        <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center group-hover:bg-blue-100">
-                          <User className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-slate-900">Dành cho Ứng viên</p>
-                          <p className="text-xs text-slate-500">Tìm việc & Phát triển</p>
-                        </div>
-                      </a>
-                      <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 rounded-lg transition-colors group">
-                        <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center group-hover:bg-emerald-100">
-                          <Briefcase className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-slate-900">Dành cho Doanh nghiệp</p>
-                          <p className="text-xs text-slate-500">Tuyển dụng nhân tài</p>
-                        </div>
-                      </a>
+                    <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4" />
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    <div>
+                      <p className="font-medium text-slate-900">Dành cho Ứng viên</p>
+                      <p className="text-xs text-slate-500">Tìm việc & Phát triển</p>
+                    </div>
+                  </button>
+                  <button
+                    className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
+                    onClick={() => {
+                      setAuthRole('hr');
+                      setAuthOpen(true);
+                    }}
+                  >
+                    <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center">
+                      <Briefcase className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">Dành cho Doanh nghiệp</p>
+                      <p className="text-xs text-slate-500">Tuyển dụng nhân tài</p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+                  {user.role === 'hr' ? 'HR' : 'T'}
+                </div>
+                <div className="text-sm">
+                  <p className="font-semibold text-slate-900">
+                    {user.role === 'hr' ? 'Doanh nghiệp demo' : 'Ứng viên demo'}
+                  </p>
+                  <button
+                    onClick={logout}
+                    className="text-xs text-slate-500 hover:text-blue-600"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex items-center md:hidden">
             <button
@@ -94,19 +122,48 @@ export default function Navbar() {
               <a href="#blog" className="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">Blog</a>
               <div className="mt-4 pt-4 border-t border-slate-100">
                 <p className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Đăng nhập / Đăng ký</p>
-                <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">
-                  <User className="w-5 h-5 text-blue-600" />
-                  Ứng viên
-                </a>
-                <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">
-                  <Briefcase className="w-5 h-5 text-emerald-600" />
-                  Doanh nghiệp
-                </a>
+                {!user ? (
+                  <>
+                    <button
+                      className="flex w-full items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50"
+                      onClick={() => {
+                        setAuthRole('talent');
+                        setAuthOpen(true);
+                      }}
+                    >
+                      <User className="w-5 h-5 text-blue-600" />
+                      Ứng viên
+                    </button>
+                    <button
+                      className="flex w-full items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50"
+                      onClick={() => {
+                        setAuthRole('hr');
+                        setAuthOpen(true);
+                      }}
+                    >
+                      <Briefcase className="w-5 h-5 text-emerald-600" />
+                      Doanh nghiệp
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="flex w-full items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50"
+                    onClick={logout}
+                  >
+                    <Briefcase className="w-5 h-5 text-emerald-600" />
+                    Đăng xuất
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+      <DemoAuthModal
+        open={authOpen}
+        role={authRole}
+        onClose={() => setAuthOpen(false)}
+      />
     </nav>
   );
 }
