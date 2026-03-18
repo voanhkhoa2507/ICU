@@ -1,4 +1,4 @@
-import {useState, FormEvent} from 'react';
+import {useState} from 'react';
 import {motion, AnimatePresence} from 'motion/react';
 import {X, Mail, Lock} from 'lucide-react';
 import {useDemoAuth} from '../contexts/DemoAuthContext';
@@ -25,7 +25,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
 
   if (!role) return null;
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
     setLoading(true);
@@ -48,7 +48,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] overflow-y-auto bg-slate-900/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-slate-900/40 backdrop-blur-sm pt-24 md:pt-32"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
@@ -57,7 +57,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
             initial={{scale: 0.95, opacity: 0, y: 20}}
             animate={{scale: 1, opacity: 1, y: 0}}
             exit={{scale: 0.95, opacity: 0, y: 20}}
-            className="mx-auto my-24 w-[min(28rem,calc(100%-2rem))] rounded-2xl bg-white p-6 shadow-2xl"
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
           >
             <div className="mb-4 flex items-center justify-between">
               <div>
