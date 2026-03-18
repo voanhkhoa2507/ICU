@@ -48,7 +48,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-900/40 backdrop-blur-sm p-4 pt-24 md:pt-28"
+          className="fixed inset-0 z-[100] overflow-y-auto bg-slate-900/40 backdrop-blur-sm"
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
@@ -57,7 +57,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
             initial={{scale: 0.95, opacity: 0, y: 20}}
             animate={{scale: 1, opacity: 1, y: 0}}
             exit={{scale: 0.95, opacity: 0, y: 20}}
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-auto"
+            className="mx-auto my-24 w-[min(28rem,calc(100%-2rem))] rounded-2xl bg-white p-6 shadow-2xl"
           >
             <div className="mb-4 flex items-center justify-between">
               <div>
