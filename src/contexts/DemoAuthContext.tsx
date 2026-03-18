@@ -17,11 +17,11 @@ const DemoAuthContext = createContext<DemoAuthContextType | undefined>(undefined
 
 const DEMO_CREDENTIALS: Record<Role, {email: string; password: string}> = {
   talent: {
-    email: 'talent@centraltech.vn',
+    email: 'talent@icu.vn',
     password: 'talent123',
   },
   hr: {
-    email: 'hr@centraltech.vn',
+    email: 'hr@icu.vn',
     password: 'hr123',
   },
 };

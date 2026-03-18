@@ -41,8 +41,8 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
 
   const hint =
     role === 'talent'
-      ? 'Tài khoản demo: talent@centraltech.vn / talent123'
-      : 'Tài khoản demo: hr@centraltech.vn / hr123';
+      ? 'Tài khoản demo: talent@icu.vn / talent123'
+      : 'Tài khoản demo: hr@icu.vn / hr123';
 
   return (
     <AnimatePresence>
@@ -87,7 +87,7 @@ export default function DemoAuthModal({open, role, onClose}: Props) {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full rounded-lg border border-slate-200 bg-white px-9 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                    placeholder="demo@centraltech.vn"
+                    placeholder="demo@icu.vn"
                   />
                 </div>
               </div>

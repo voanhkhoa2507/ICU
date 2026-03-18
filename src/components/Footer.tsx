@@ -10,7 +10,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">C</span>
               </div>
-              <span className="font-bold text-2xl text-white tracking-tight">CentralTech</span>
+              <span className="font-bold text-2xl text-white tracking-tight">icu</span>
             </a>
             <p className="text-slate-400 max-w-md mb-6 leading-relaxed">
               Nền tảng kết nối nhân sự IT và doanh nghiệp hàng đầu tại miền Trung. Sứ mệnh của chúng tôi là đánh thức tiềm năng công nghệ và xây dựng một hệ sinh thái bền vững.
@@ -43,18 +43,18 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
-                <span>Tòa nhà FPT Complex, Nam Kỳ Khởi Nghĩa, Ngũ Hành Sơn, Đà Nẵng</span>
+                <span>Trường Đại học Kinh tế Đà Nẵng, Đà Nẵng</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-slate-500 shrink-0" />
-                <span>hello@centraltech.vn</span>
+                <span>hello@icu.vn</span>
               </li>
             </ul>
           </div>
         </div>
         
         <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-          <p>&copy; 2026 CentralTech Hub. All rights reserved.</p>
+          <p>&copy; 2026 icu Hub. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-white transition-colors">Điều khoản sử dụng</a>
             <a href="#" className="hover:text-white transition-colors">Chính sách bảo mật</a>
