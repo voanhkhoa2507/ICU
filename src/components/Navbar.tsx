@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu, X, ChevronDown, Briefcase, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useDemoAuth } from '../contexts/DemoAuthContext';
@@ -10,7 +10,20 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authRole, setAuthRole] = useState<Role | null>(null);
+  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
   const { user, logout } = useDemoAuth();
+  const roleMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (!roleMenuRef.current) return;
+      if (!roleMenuRef.current.contains(e.target as Node)) {
+        setRoleMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, []);
 
   return (
     <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
@@ -32,49 +45,59 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex items-center">
             {!user ? (
-              <div className="relative">
+              <div ref={roleMenuRef} className="relative">
                 <button
                   className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
                   onClick={() => {
-                    setAuthRole('talent');
-                    setAuthOpen(true);
+                    setRoleMenuOpen(v => !v);
                   }}
                 >
                   Đăng nhập / Đăng ký
                   <ChevronDown className="w-4 h-4" />
                 </button>
-                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-slate-100 overflow-hidden">
-                  <button
-                    className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
-                    onClick={() => {
-                      setAuthRole('talent');
-                      setAuthOpen(true);
-                    }}
-                  >
-                    <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
-                      <User className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-slate-900">Dành cho Ứng viên</p>
-                      <p className="text-xs text-slate-500">Tìm việc & Phát triển</p>
-                    </div>
-                  </button>
-                  <button
-                    className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
-                    onClick={() => {
-                      setAuthRole('hr');
-                      setAuthOpen(true);
-                    }}
-                  >
-                    <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center">
-                      <Briefcase className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-slate-900">Dành cho Doanh nghiệp</p>
-                      <p className="text-xs text-slate-500">Tuyển dụng nhân tài</p>
-                    </div>
-                  </button>
-                </div>
+                <AnimatePresence>
+                  {roleMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-slate-100 overflow-hidden"
+                    >
+                      <button
+                        className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
+                        onClick={() => {
+                          setRoleMenuOpen(false);
+                          setAuthRole('talent');
+                          setAuthOpen(true);
+                        }}
+                      >
+                        <div className="w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">Dành cho Ứng viên</p>
+                          <p className="text-xs text-slate-500">Tìm việc & Phát triển</p>
+                        </div>
+                      </button>
+                      <button
+                        className="flex w-full items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left text-sm"
+                        onClick={() => {
+                          setRoleMenuOpen(false);
+                          setAuthRole('hr');
+                          setAuthOpen(true);
+                        }}
+                      >
+                        <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center">
+                          <Briefcase className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-slate-900">Dành cho Doanh nghiệp</p>
+                          <p className="text-xs text-slate-500">Tuyển dụng nhân tài</p>
+                        </div>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <div className="flex items-center gap-3">

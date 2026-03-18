@@ -5,10 +5,10 @@ import { Search, Filter, Star, CheckCircle2, AlertCircle, Sparkles, MapPin, Brie
 const candidates = [
   {
     id: 1,
-    name: 'Nguyễn Văn A',
-    title: 'Senior React Developer',
-    location: 'Đà Nẵng',
-    experience: '5 năm',
+    name: 'Võ Anh Khoa',
+    title: 'Network Engineer and System Administrator',
+    location: 'Hồ Chí Minh',
+    experience: 'Năm 3',
     matchScore: 98,
     skills: [
       { name: 'React', match: true },
@@ -20,9 +20,9 @@ const candidates = [
   },
   {
     id: 2,
-    name: 'Trần Thị B',
+    name: 'Nguyễn Ngọc Minh Châu',
     title: 'Fullstack Engineer',
-    location: 'Huế',
+    location: 'Đà Nẵng',
     experience: '3 năm',
     matchScore: 85,
     skills: [
